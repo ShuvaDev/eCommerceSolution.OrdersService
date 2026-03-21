@@ -15,6 +15,12 @@ namespace eCommerce.OrderMicroservice.BusinessLogicLayer
             services.AddScoped<IOrdersService, OrdersService>();
             services.AddValidatorsFromAssemblyContaining<OrderAddRequestValidator>();
             services.AddAutoMapper(typeof(OrderAddRequestToOrderMappingProfile).Assembly);
+
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = $"{configuration["REDIS_HOST"]}:{configuration["REDIS_PORT"]}";
+            });
+
             return services;
         }
     }

@@ -17,7 +17,6 @@ public class ProductsMicroservicePolicies : IProductsMicroservicePolicies
         _logger = logger;
     }
 
-
     public IAsyncPolicy<HttpResponseMessage> GetBulkheadIsolationPolicy()
     {
         AsyncBulkheadPolicy<HttpResponseMessage> policy = Policy.BulkheadAsync<HttpResponseMessage>(
@@ -42,13 +41,13 @@ public class ProductsMicroservicePolicies : IProductsMicroservicePolicies
               _logger.LogWarning("Fallback triggered: The request failed, returning dummy data");
 
               ProductDTO product = new ProductDTO(ProductID: Guid.Empty,
-            ProductName: "Temporarily Unavailable (fallback)",
-            Category: "Temporarily Unavailable (fallback)",
-            UnitPrice: 0,
-            QuantityInStock: 0
-            );
+                    ProductName: "Temporarily Unavailable (fallback)",
+                    Category: "Temporarily Unavailable (fallback)",
+                    UnitPrice: 0,
+                    QuantityInStock: 0
+              );
 
-              var response = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+              var response = new HttpResponseMessage(System.Net.HttpStatusCode.ServiceUnavailable)
               {
                   Content = new StringContent(JsonSerializer.Serialize(product), Encoding.UTF8, "application/json")
               };
